@@ -4,11 +4,16 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
+
+import net.kalangos.entities.Entity;
+import net.kalangos.entities.Player;
+import net.kalangos.graficos.Spritesheet;
 
 public class Game extends Canvas implements Runnable {
 
@@ -25,6 +30,8 @@ public class Game extends Canvas implements Runnable {
 
 	private BufferedImage image;
 
+	public List<Entity> entities;
+	public Spritesheet spritesheet;
 	
 	private BufferedImage[] player;
 	private int x = 0;
@@ -34,11 +41,14 @@ public class Game extends Canvas implements Runnable {
 	private int maxAnimation = 3;
 
 	public Game() {
-	
-	
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		entities = new ArrayList<Entity>();
+		spritesheet = new Spritesheet("/spritesheet.png");
+		
+		Player player = new Player(0,0,16,16, spritesheet.getSprite(32, 0, 16, 16));
+		entities.add(player);
 	}
 
 	public void initFrame() {
@@ -68,12 +78,15 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static void main(String[] args) {
-
 		Game game = new Game();
 		game.start();
 	}
 
 	public void tick() {
+		for(int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			e.tick();
+		}
 	
 	}
 
@@ -88,7 +101,11 @@ public class Game extends Canvas implements Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		/* Renderização do jogo */
-		Graphics g2 = (Graphics2D) g;
+		//Graphics g2 = (Graphics2D) g;
+		for(int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			e.render(g);
+		}
 
 		/***/
 
