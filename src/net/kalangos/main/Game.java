@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import net.kalangos.entities.Entity;
 import net.kalangos.entities.Player;
 import net.kalangos.graficos.Spritesheet;
+import net.kalangos.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
@@ -35,12 +36,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public List<Entity> entities;
 	public static Spritesheet spritesheet;
 	
+	public static World world;
+	
 	private Player player;
 
 	public Game() {
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
+		//inicializando os objetos do jogo
+		world = new World("/map.png");
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
