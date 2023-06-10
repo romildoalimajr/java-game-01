@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import net.kalangos.main.Game;
+import net.kalangos.world.Camera;
 
 public class Entity { 
 	
@@ -63,8 +64,8 @@ public class Entity {
 		
 	}
 	
-	public void render(Graphics g) {
-		g.drawImage(sprite, this.getX(), this.getY(), null);
+	public void render(Graphics g) { 
+		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
 	}
 	
 	
