@@ -19,6 +19,8 @@ public class Player extends Entity {
 	private boolean moved = false;
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
+	
+	public int life = 100;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -54,6 +56,17 @@ public class Player extends Entity {
 		} else if (down && World.isFree(this.getX(), (int)(y + speed))) {
 			moved = true;
 			y += speed;
+		}else {
+			//Estamos colidindo
+			if(Game.rand.nextInt(100) < 10) {
+				Game.player.life -= Game.rand.nextInt(5);
+				if(Game.player.life <= 0) {
+					//Game Over
+					System.exit(1);
+				}
+				System.out.println("Vida.: " + Game.player.life);
+			}
+			
 		}
 		
 		if(moved) {

@@ -21,10 +21,10 @@ public class Enemy extends Entity {
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
 		sprites = new BufferedImage[4];
-		sprites[0] = Game.spritesheet.getSprite(16*6, 16, 16, 16);
-		sprites[1] = Game.spritesheet.getSprite(16*7, 16, 16, 16);
-		sprites[2] = Game.spritesheet.getSprite(16*8, 16, 16, 16);
-		sprites[3] = Game.spritesheet.getSprite(16*9, 16, 16, 16);
+		sprites[0] = Game.spritesheet.getSprite(16 * 6, 16, 16, 16);
+		sprites[1] = Game.spritesheet.getSprite(16 * 7, 16, 16, 16);
+		sprites[2] = Game.spritesheet.getSprite(16 * 8, 16, 16, 16);
+		sprites[3] = Game.spritesheet.getSprite(16 * 9, 16, 16, 16);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -33,34 +33,45 @@ public class Enemy extends Entity {
 		 * xMask = 8; yMask = 8; wMask = 5; hMask = 5;
 		 */
 		// if (Game.rand.nextInt(100) < 30) {
-		if ((int) x < Game.player.getX() && World.isFree((int) (x + speed), this.getY())
-				&& !isColliding((int) (x + speed), this.getY())) {
-			x += speed;
-		} else if ((int) x > Game.player.getX() && World.isFree((int) (x - speed), this.getY())
-				&& !isColliding((int) (x - speed), this.getY())) {
-			x -= speed;
-		}
+		if (this.isCollidingWithPlayer() == false) {
+			if ((int) x < Game.player.getX() && World.isFree((int) (x + speed), this.getY())
+					&& !isColliding((int) (x + speed), this.getY())) {
+				x += speed;
+			} else if ((int) x > Game.player.getX() && World.isFree((int) (x - speed), this.getY())
+					&& !isColliding((int) (x - speed), this.getY())) {
+				x -= speed;
+			}
 
-		if ((int) y < Game.player.getY() && World.isFree(this.getX(), (int) (y + speed))
-				&& !isColliding(this.getX(), (int) (y + speed))) {
-			y += speed;
-		} else if ((int) y > Game.player.getY() && World.isFree(this.getX(), (int) (y - speed))
-				&& !isColliding(this.getX(), (int) (y - speed))) {
-			y -= speed;
-		}
+			if ((int) y < Game.player.getY() && World.isFree(this.getX(), (int) (y + speed))
+					&& !isColliding(this.getX(), (int) (y + speed))) {
+				y += speed;
+			} else if ((int) y > Game.player.getY() && World.isFree(this.getX(), (int) (y - speed))
+					&& !isColliding(this.getX(), (int) (y - speed))) {
+				y -= speed;
+			}
 
-		if (moved) {
-			frames++;
-			if (frames == maxFrames) {
-				frames = 0;
-				index++;
-				if (index > maxIndex) {
-					index = 0;
+			if (moved) {
+				frames++;
+				if (frames == maxFrames) {
+					frames = 0;
+					index++;
+					if (index > maxIndex) {
+						index = 0;
+					}
 				}
 			}
 		}
 
 		// }
+
+	}
+
+	public boolean isCollidingWithPlayer() {
+
+		Rectangle enemyCurrent = new Rectangle(this.getX() + xMask, this.getY() + yMask, wMask, hMask);
+		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
+
+		return enemyCurrent.intersects(player);
 
 	}
 
