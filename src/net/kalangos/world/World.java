@@ -51,7 +51,7 @@ public class World {
 					}else if(pixelAtual == 0xFFFFD800){
 						//life pack
 						Game.entities.add(new LifePack(xx*16, yy*16,16,16, Entity.LIFE_PACK_EN));
-					}else if(pixelAtual == 0xFFFF006E){
+					}else if(pixelAtual == 0xFFFF00DC){
 						//bullet
 						Game.entities.add(new Bullets(xx*16, yy*16,16,16, Entity.BULLET_EN));
 					}else {
@@ -67,9 +67,18 @@ public class World {
 	}
 	
 	public void render(Graphics g) {
-		for(int xx = 0; xx < WIDTH; xx++) {
-			for(int yy = 0; yy < HEIGHT; yy++) {
-				Tile tile = tiles[xx + (yy *WIDTH)];
+		int xStart = Camera.x >> 4;
+		int yStart = Camera.x >> 4;
+		
+		int xFinal = xStart + (Game.WIDTH >> 4);
+		int yFinal = yStart + (Game.HEIGHT >> 4);
+		
+		for(int xx = xStart; xx <= xFinal; xx++) {
+			for(int yy = yStart; yy <= yFinal; yy++) {
+				if(xx < 0 || yy < 0 || xx >= WIDTH || yy >= HEIGHT) {
+					continue;
+				}
+				Tile tile = tiles[xx + (yy * WIDTH)];
 				tile.render(g);
 			}
 		}
