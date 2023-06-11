@@ -62,7 +62,7 @@ public class Player extends Entity {
 				Game.player.life -= Game.rand.nextInt(5);
 				if(Game.player.life <= 0) {
 					//Game Over
-					//System.exit(1);
+					System.exit(1);
 				}
 				System.out.println("Vida.: " + Game.player.life);
 			}
@@ -79,10 +79,29 @@ public class Player extends Entity {
 				}
 			}
 		}
+		
+		this.checkCollisionLifePack();
+		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH*16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT*16 - Game.HEIGHT);
 	}
 
+	public void checkCollisionLifePack() {
+		for(int i = 0; i < Game.entities.size(); i++) {
+			Entity atual = Game.entities.get(i);
+			if(atual instanceof LifePack) {
+				if(Entity.isColliding(this, atual)) {
+					life += 100;
+					if(life >= 100) {
+						life = 100;
+					}
+					Game.entities.remove(atual);
+					return;
+				}
+			}
+		}
+	}
+	
 	public void render(Graphics g) {
 		if (dir == right_dir) {
 			g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);

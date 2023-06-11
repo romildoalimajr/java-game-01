@@ -13,7 +13,7 @@ public class UI {
 		g.fillRect(8, 4, 70, 8);
 		g.setColor(Color.GREEN);
 		g.fillRect(8, 4, (int)((Player.life/Player.maxLife)*70), 8);
-		g.setColor(Color.white);
+		g.setColor(Color.yellow);
 		g.setFont(new Font("arial", Font.BOLD, 8));
 		g.drawString((int)Player.life + "/" + (int )Player.maxLife, 30, 11);
 	}
