@@ -20,7 +20,7 @@ public class Player extends Entity {
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
 	
-	public int life = 100;
+	public static double life = 100, maxLife = 100;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -62,7 +62,7 @@ public class Player extends Entity {
 				Game.player.life -= Game.rand.nextInt(5);
 				if(Game.player.life <= 0) {
 					//Game Over
-					System.exit(1);
+					//System.exit(1);
 				}
 				System.out.println("Vida.: " + Game.player.life);
 			}
