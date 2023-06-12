@@ -3,7 +3,9 @@ package net.kalangos.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -115,7 +117,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		/* Renderização do jogo */
-		// Graphics g2 = (Graphics2D) g;
+		//Graphics g2 = (Graphics2D) g;
 		world.render(g);
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
@@ -127,7 +129,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
-
+		g.setFont(new Font("arial", Font.BOLD, 17));
+		g.setColor(Color.WHITE);
+		g.drawString("Ammo.: " + player.ammo, 610, 20);
 		bs.show();
 	}
 
