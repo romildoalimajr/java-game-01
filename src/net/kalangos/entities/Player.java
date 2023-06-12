@@ -31,8 +31,10 @@ public class Player extends Entity {
 	private int damageFrames = 0;
 
 	public boolean shoot = false;
+	public boolean mouseShoot = false;
 
 	public double life = 100, maxLife = 100;
+	public int mouseX, mouseY;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -103,7 +105,7 @@ public class Player extends Entity {
 				ammo--;
 				// criar bala e atirar
 				shoot = false;
-				System.out.println("atirando");
+				// System.out.println("atirando");
 				int dx = 0;
 				int px = 0;
 				int py = 6;
@@ -115,21 +117,42 @@ public class Player extends Entity {
 					dx = -1;
 				}
 
-				BulletShoot shoots = new BulletShoot(this.getX(),this.getY() + py, 3, 3, null, dx, 0);
+				BulletShoot shoots = new BulletShoot(this.getX(), this.getY() + py, 3, 3, null, dx, 0);
+				Game.shoot.add(shoots);
+			}
+		}
+		if (mouseShoot) {
+			mouseShoot = false;
+			if (hasGun && ammo > 0) {
+				ammo--;
+				//Criar balas e atirar com o mouse
+				
+				int px = 0;
+				int py = 8;
+				double angle = 0;
+				if (dir == right_dir) {
+					px = 18;
+					angle = Math.atan2(mouseY -(this.getY() + py - Camera.y), mouseX - (this.getX() + px  - Camera.x)); 
+				} else {
+					px = -8;
+					angle = Math.atan2(mouseY -(this.getY() + py - Camera.y), mouseX - (this.getX() + px  - Camera.x)); 
+				}
+				double dx = Math.cos(angle);
+				double dy = Math.sin(angle);
+			
+				BulletShoot shoots = new BulletShoot(this.getX(), this.getY() + py, 3, 3, null, dx, 0);
 				Game.shoot.add(shoots);
 			}
 		}
 
 		if (life <= 0) {
 			/*
-			Game.entities = new ArrayList<Entity>();
-			Game.enemies = new ArrayList<Enemy>();
-			Game.spritesheet = new Spritesheet("/spritesheet.png");
-			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
-			Game.entities.add(Game.player);
-			Game.world = new World("/map.png");
-			return;
-			*/
+			 * Game.entities = new ArrayList<Entity>(); Game.enemies = new
+			 * ArrayList<Enemy>(); Game.spritesheet = new Spritesheet("/spritesheet.png");
+			 * Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16,
+			 * 16)); Game.entities.add(Game.player); Game.world = new World("/map.png");
+			 * return;
+			 */
 		}
 
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
