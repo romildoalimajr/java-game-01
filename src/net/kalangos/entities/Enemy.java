@@ -91,7 +91,6 @@ public class Enemy extends Entity {
 		Game.entities.remove(this);
 	}
 	public void collidingBullet() {
-	
 		for(int i = 0; i < Game.shoot.size(); i++) {
 			Entity e = Game.shoot.get(i);
 			if(e instanceof BulletShoot) {
@@ -106,7 +105,6 @@ public class Enemy extends Entity {
 	}
 
 	public boolean isCollidingWithPlayer() {
-
 		Rectangle enemyCurrent = new Rectangle(this.getX() + xMask, this.getY() + yMask, wMask, hMask);
 		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
 

@@ -54,7 +54,7 @@ public class World {
 					}else if(pixelAtual == 0xFFFFD800){
 						//life pack
 						LifePack pack = new LifePack(xx*16, yy*16,16,16, Entity.LIFE_PACK_EN);
-						//pack.setMask(8, 8, 8, 8);
+						pack.setMask(8, 8, 8, 8);
 						Game.entities.add(pack);
 					}else if(pixelAtual == 0xFFFF00DC){
 						//bullet
