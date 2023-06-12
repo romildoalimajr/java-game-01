@@ -10,7 +10,7 @@ import net.kalangos.world.Camera;
 
 public class Entity { 
 	
-	public static BufferedImage LIFE_PACK_EN = Game.spritesheet.getSprite(6*16, 0, 16, 16);
+	public static BufferedImage LIFE_PACK_EN = Game.spritesheet.getSprite(16*6, 0, 16, 16);
 	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7*16, 0, 16, 16);
 	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(32, 16, 16, 16);
 	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(6*16, 16, 16, 16);

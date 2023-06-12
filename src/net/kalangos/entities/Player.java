@@ -30,6 +30,7 @@ public class Player extends Entity {
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
 
+	public boolean moved = false;
 	public boolean shoot = false;
 	public boolean mouseShoot = false;
 
@@ -53,10 +54,13 @@ public class Player extends Entity {
 	}
 
 	public void tick() {
+		moved = false;
 		if (right && World.isFree((int) (x + speed), this.getY())) {
+			moved = true;
 			dir = right_dir;
 			x += speed;
 		} else if (left && World.isFree((int) (x - speed), this.getY())) {
+			moved = true;
 			dir = left_dir;
 			x -= speed;
 		}
@@ -104,7 +108,6 @@ public class Player extends Entity {
 			if (hasGun && ammo > 0) {
 				ammo--;
 				// criar bala e atirar
-				shoot = false;
 				// System.out.println("atirando");
 				int dx = 0;
 				int px = 0;

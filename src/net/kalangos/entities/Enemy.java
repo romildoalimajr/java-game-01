@@ -16,7 +16,9 @@ public class Enemy extends Entity {
 	private int xMask = 8, yMask = 8, wMask = 10, hMask = 10;
 	private BufferedImage[] sprites;
 
-	private int frames = 0, maxFrames = 10, index = 0, maxIndex = 3;
+	private int frames = 0, maxFrames = 20, index = 0, maxIndex = 1;
+
+	private int life = 5;
 
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
@@ -49,21 +51,45 @@ public class Enemy extends Entity {
 					&& !isColliding(this.getX(), (int) (y - speed))) {
 				y -= speed;
 			}
-
-			if (moved) {
-				frames++;
-				if (frames == maxFrames) {
-					frames = 0;
-					index++;
-					if (index > maxIndex) {
-						index = 0;
-					}
-				}
+		} else {
+			if (Game.rand.nextInt(100) < 10) {
+				Game.player.life -= Game.rand.nextInt(3);
+				Game.player.isDamaged = true;
 			}
 		}
 
-		// }
-
+		frames++;
+		if (frames == maxFrames) {
+			frames = 0;
+			index++;
+			if (index > maxIndex) {
+				index = 0;
+			}
+		}
+		
+		collidingBullet();
+		
+		if(life <= 0) {
+			destroySelf();
+			return;
+		}
+	}
+	
+	public void destroySelf() {
+		Game.entities.remove(this);
+	}
+	public void collidingBullet() {
+	
+		for(int i = 0; i < Game.shoot.size(); i++) {
+			Entity e = Game.shoot.get(i);
+			if(e instanceof BulletShoot) {
+				if(Entity.isColliding(this, e)) {
+					life--;
+					Game.shoot.remove(i);
+					return;
+				}
+			}
+		}
 	}
 
 	public boolean isCollidingWithPlayer() {
