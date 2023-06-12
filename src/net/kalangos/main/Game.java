@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -16,6 +15,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import net.kalangos.entities.BulletShoot;
 import net.kalangos.entities.Enemy;
 import net.kalangos.entities.Entity;
 import net.kalangos.entities.Player;
@@ -40,6 +40,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
+	public static List<BulletShoot> shoot;
 	public static Spritesheet spritesheet;
 
 	public static World world;
@@ -60,6 +61,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
+		shoot = new ArrayList<BulletShoot>();
+
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
@@ -104,6 +107,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			e.tick();
 		}
 
+		for (int i = 0; i < shoot.size(); i++) {
+			shoot.get(i).tick();
+		}
+
 	}
 
 	public void render() {
@@ -117,11 +124,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		/* Renderização do jogo */
-		//Graphics g2 = (Graphics2D) g;
+		// Graphics g2 = (Graphics2D) g;
 		world.render(g);
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.render(g);
+		}
+
+		for (int i = 0; i < shoot.size(); i++) {
+			shoot.get(i).render(g);
 		}
 		ui.render(g);
 		/***/
@@ -184,6 +195,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
 		}
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			player.shoot = true;
+		}
+
 	}
 
 	@Override
