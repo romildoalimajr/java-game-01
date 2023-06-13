@@ -25,7 +25,7 @@ public class Player extends Entity {
 
 	private boolean hasGun = false;
 
-	public int ammo = 1000;
+	public int ammo = 50;
 
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
@@ -34,7 +34,7 @@ public class Player extends Entity {
 	public boolean shoot = false;
 	public boolean mouseShoot = false;
 
-	public double life = 20, maxLife = 100;
+	public double life = 100, maxLife = 100;
 	public int mouseX, mouseY;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {

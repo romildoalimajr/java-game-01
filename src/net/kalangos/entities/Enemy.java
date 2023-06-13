@@ -34,9 +34,9 @@ public class Enemy extends Entity {
 	}
 
 	public void tick() {
-		/*
-		 * xMask = 8; yMask = 8; wMask = 5; hMask = 5;
-		 */
+		
+		 xMask = 8; yMask = 8; wMask = 5; hMask = 5;
+		 
 		// if (Game.rand.nextInt(100) < 30) {
 		if (this.isCollidingWithPlayer() == false) {
 			if ((int) x < Game.player.getX() && World.isFree((int) (x + speed), this.getY())

@@ -12,7 +12,7 @@ public class Entity {
 	
 	public static BufferedImage LIFE_PACK_EN = Game.spritesheet.getSprite(96, 0, 16, 16);
 	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7*16, 0, 16, 16);
-	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(32, 32, 16, 16);
+	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(16, 16, 16, 16);
 	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(6*16, 16, 16, 16);
 	public static BufferedImage ENEMY_FEEDBACK = Game.spritesheet.getSprite(96, 32, 16, 16);
  	public static BufferedImage GUN_RIGHT = Game.spritesheet.getSprite(128, 0, 16, 16);
@@ -93,7 +93,7 @@ public class Entity {
 	public void render(Graphics g) { 
 		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
 		g.setColor(Color.RED);
-		g.fillRect(this.getX() + xMask - Camera.x, this.getY() + yMask - Camera.y, wMask, hMask);
+		//g.fillRect(this.getX() + xMask - Camera.x, this.getY() + yMask - Camera.y, wMask, hMask);
 	}
 	
 	
