@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -23,7 +24,6 @@ import net.kalangos.entities.Entity;
 import net.kalangos.entities.Player;
 import net.kalangos.graficos.Spritesheet;
 import net.kalangos.graficos.UI;
-import net.kalangos.world.Camera;
 import net.kalangos.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
@@ -54,6 +54,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Random rand;
 
 	public UI ui;
+
+	public static String gameState = "NORMAL";
 
 	public Game() {
 		rand = new Random();
@@ -107,24 +109,29 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void tick() {
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
-			e.tick();
-		}
-
-		for (int i = 0; i < shoot.size(); i++) {
-			shoot.get(i).tick();
-		}
-		
-		if(enemies.size() == 0) {
-			System.out.println("Próximo level");
-			//avançar para o próximo level
-			CUR_LEVEL++;
-			if(CUR_LEVEL > MAX_LEVEL) {
-				CUR_LEVEL = 1;
+		if (gameState == "NORMAL") {
+			for (int i = 0; i < entities.size(); i++) {
+				Entity e = entities.get(i);
+				e.tick();
 			}
-			String newWorld = "level" + CUR_LEVEL + ".png";
-			World.restartGame(newWorld);
+
+			for (int i = 0; i < shoot.size(); i++) {
+				shoot.get(i).tick();
+			}
+
+			if (enemies.size() == 0) {
+				System.out.println("Próximo level");
+				// avançar para o próximo level
+				CUR_LEVEL++;
+				if (CUR_LEVEL > MAX_LEVEL) {
+					CUR_LEVEL = 1;
+				}
+				String newWorld = "level" + CUR_LEVEL + ".png";
+				World.restartGame(newWorld);
+			}
+		} else if (gameState == "GAME_OVER") {
+			System.out.println("Game Over");
+
 		}
 
 	}
@@ -159,6 +166,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.setFont(new Font("arial", Font.BOLD, 17));
 		g.setColor(Color.WHITE);
 		g.drawString("Ammo.: " + player.ammo, 610, 20);
+		if (gameState == "GAME_OVER") {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color(0, 0, 0, 100));
+			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+			g.setFont(new Font("arial", Font.BOLD, 36));
+			g.setColor(Color.WHITE);
+			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 70, (HEIGHT * SCALE) / 2);
+			g.setFont(new Font("arial", Font.BOLD, 30));
+			g.drawString(">Presione Enter para reiniciar<", (WIDTH * SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 40);
+		}
 		bs.show();
 	}
 
@@ -231,7 +248,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = false;
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = false;
 		}
@@ -240,33 +257,33 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		player.mouseShoot = true;
-		player.mouseX = (e.getX() / 3);
-		player.mouseY = (e.getY() / 3);
+//		player.mouseShoot = true;
+//		player.mouseX = (e.getX() / 3);
+//		player.mouseY = (e.getY() / 3);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

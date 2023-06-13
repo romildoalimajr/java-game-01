@@ -34,7 +34,7 @@ public class Player extends Entity {
 	public boolean shoot = false;
 	public boolean mouseShoot = false;
 
-	public double life = 100, maxLife = 100;
+	public double life = 20, maxLife = 100;
 	public int mouseX, mouseY;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
@@ -150,6 +150,7 @@ public class Player extends Entity {
 
 		if (life <= 0) {
 			//game over
+			Game.gameState = "GAME_OVER";
 		}
 
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
