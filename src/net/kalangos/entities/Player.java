@@ -2,9 +2,7 @@ package net.kalangos.entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
-import net.kalangos.graficos.Spritesheet;
 import net.kalangos.main.Game;
 import net.kalangos.world.Camera;
 import net.kalangos.world.World;
@@ -78,11 +76,10 @@ public class Player extends Entity {
 				Game.player.isDamaged = true;
 				if (Game.player.life <= 0) {
 					// Game Over
-					// System.exit(1);
+					System.exit(1);
 				}
 				// System.out.println("Vida.: " + Game.player.life);
 			}
-
 		}
 
 		frames++;
@@ -105,6 +102,7 @@ public class Player extends Entity {
 				isDamaged = false;
 			}
 		}
+		
 		if (shoot) {
 			shoot = false;
 			if (hasGun && ammo > 0) {
@@ -121,17 +119,16 @@ public class Player extends Entity {
 					px = -8;
 					dx = -1;
 				}
-
 				BulletShoot shoots = new BulletShoot(this.getX(), this.getY() + py, 3, 3, null, dx, 0);
 				Game.shoot.add(shoots);
 			}
 		}
+		
 		if (mouseShoot) {
 			mouseShoot = false;
 			if (hasGun && ammo > 0) {
 				ammo--;
 				// Criar balas e atirar com o mouse
-
 				int px = 0;
 				int py = 8;
 				double angle = 0;
@@ -156,13 +153,15 @@ public class Player extends Entity {
 			Game.gameState = "GAME_OVER";
 		}
 
-		updateCamera();
+		//updateCamera();
+		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, (World.WIDTH * 16) - Game.WIDTH);
+		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, (World.HEIGHT * 16) - Game.HEIGHT);
 	}
 
-	public void updateCamera() {
-		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
-		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
-	}
+//	public void updateCamera() {
+//		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, (World.WIDTH * 16) - Game.WIDTH);
+//		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, (World.HEIGHT * 16) - Game.HEIGHT);
+//	}
 
 	public void checkCollisionGun() {
 		for (int i = 0; i < Game.entities.size(); i++) {
@@ -170,7 +169,7 @@ public class Player extends Entity {
 			if (atual instanceof Weapon) {
 				if (Entity.isColliding(this, atual)) {
 					hasGun = true;
-					ammo += 10;
+					ammo += 50;
 					// System.out.println("Pegou arma");
 					// System.out.println("Munição atual: " + ammo);
 					Game.entities.remove(atual);
@@ -184,7 +183,7 @@ public class Player extends Entity {
 			Entity atual = Game.entities.get(i);
 			if (atual instanceof Bullets) {
 				if (Entity.isColliding(this, atual)) {
-					ammo += 10;
+					ammo += 50;
 					// System.out.println("Munição atual: " + ammo);
 					Game.entities.remove(atual);
 				}

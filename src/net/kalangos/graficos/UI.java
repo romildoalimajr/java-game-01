@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import net.kalangos.entities.Player;
 import net.kalangos.main.Game;
 
 public class UI {
