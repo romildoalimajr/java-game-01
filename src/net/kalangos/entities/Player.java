@@ -66,8 +66,10 @@ public class Player extends Entity {
 		}
 
 		if (up && World.isFree(this.getX(), (int) (y - speed))) {
+			moved = true;
 			y -= speed;
 		} else if (down && World.isFree(this.getX(), (int) (y + speed))) {
+			moved = true;
 			y += speed;
 		} else {
 			// Estamos colidindo
@@ -150,6 +152,7 @@ public class Player extends Entity {
 
 		if (life <= 0) {
 			//game over
+			life = 0;
 			Game.gameState = "GAME_OVER";
 		}
 

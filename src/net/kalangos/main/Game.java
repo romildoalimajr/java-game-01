@@ -56,6 +56,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public UI ui;
 
 	public static String gameState = "NORMAL";
+	private boolean showMessageGameOver = false;
+	private int framesGameOver = 0;
+	private boolean restartGame = false;
 
 	public Game() {
 		rand = new Random();
@@ -110,6 +113,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void tick() {
 		if (gameState == "NORMAL") {
+			this.restartGame = false;
 			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
 				e.tick();
@@ -130,7 +134,22 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				World.restartGame(newWorld);
 			}
 		} else if (gameState == "GAME_OVER") {
-			System.out.println("Game Over");
+			this.framesGameOver++;
+			if (this.framesGameOver == 30) {
+				this.framesGameOver = 0;
+				if (this.showMessageGameOver) {
+					this.showMessageGameOver = false;
+				} else {
+					this.showMessageGameOver = true;
+				}
+			}
+			if (restartGame) {
+				this.restartGame = false;
+				this.gameState = "NORMAL";
+				CUR_LEVEL = 1;
+				String newWorld = "level" + CUR_LEVEL + ".png";
+				World.restartGame(newWorld);
+			}
 
 		}
 
@@ -174,7 +193,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g.setColor(Color.WHITE);
 			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 70, (HEIGHT * SCALE) / 2);
 			g.setFont(new Font("arial", Font.BOLD, 30));
-			g.drawString(">Presione Enter para reiniciar<", (WIDTH * SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 40);
+			if (showMessageGameOver) {
+				g.drawString(">Presione Enter para reiniciar<", (WIDTH * SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 40);
+			}
+
 		}
 		bs.show();
 	}
@@ -230,6 +252,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 		if (e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = true;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.restartGame = true;
 		}
 
 	}
