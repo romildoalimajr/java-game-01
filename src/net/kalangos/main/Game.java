@@ -37,7 +37,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static JFrame frame;
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
-	private final int SCALE = 3;
+	public static final int SCALE = 3;
 
 	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
 	private BufferedImage image;
@@ -55,10 +55,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public UI ui;
 
-	public static String gameState = "NORMAL";
+	public static String gameState = "MENU";
 	private boolean showMessageGameOver = false;
 	private int framesGameOver = 0;
 	private boolean restartGame = false;
+	
+	public Menu menu;
 
 	public Game() {
 		rand = new Random();
@@ -77,6 +79,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/level1.png");
+		
+		menu = new Menu();
 
 	}
 
@@ -151,6 +155,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				World.restartGame(newWorld);
 			}
 
+		}else if(gameState == "MENU") {
+			menu.tick();
 		}
 
 	}
@@ -197,6 +203,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				g.drawString(">Presione Enter para reiniciar<", (WIDTH * SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 40);
 			}
 
+		}else if(gameState == "MENU") {
+			menu.render(g);
 		}
 		bs.show();
 	}
@@ -247,8 +255,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = true;
+			if(gameState == "MENU") {
+				menu.up = true;
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
+			
+			if(gameState == "MENU") {
+				menu.down = true;
+			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = true;
