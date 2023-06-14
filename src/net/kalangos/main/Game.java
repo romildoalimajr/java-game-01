@@ -85,7 +85,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void initFrame() {
-		frame = new JFrame("My Game #1");
+		frame = new JFrame("My Game #1 - Kalangos Studio");
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
@@ -116,7 +116,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void tick() {
-		if (gameState == "NORMAL") {
+		if (gameState == "MENU") {
 			this.restartGame = false;
 			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -265,11 +265,21 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				menu.down = true;
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_X) {
+		
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			player.shoot = true;
 		}
+		
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			this.restartGame = true;
+			if(gameState == "MENU") {
+				menu.enter = true;
+			}
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			gameState = "MENU";
+			menu.pause = true;
 		}
 
 	}

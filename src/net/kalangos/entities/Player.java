@@ -130,47 +130,38 @@ public class Player extends Entity {
 			mouseShoot = false;
 			if (hasGun && ammo > 0) {
 				ammo--;
-				//Criar balas e atirar com o mouse
-				
+				// Criar balas e atirar com o mouse
+
 				int px = 0;
 				int py = 8;
 				double angle = 0;
 				if (dir == right_dir) {
 					px = 18;
-					angle = Math.atan2(mouseY -(this.getY() + py - Camera.y), mouseX - (this.getX() + px  - Camera.x)); 
+					angle = Math.atan2(mouseY - (this.getY() + py - Camera.y), mouseX - (this.getX() + px - Camera.x));
 				} else {
 					px = -8;
-					angle = Math.atan2(mouseY -(this.getY() + py - Camera.y), mouseX - (this.getX() + px  - Camera.x)); 
+					angle = Math.atan2(mouseY - (this.getY() + py - Camera.y), mouseX - (this.getX() + px - Camera.x));
 				}
 				double dx = Math.cos(angle);
 				double dy = Math.sin(angle);
-			
+
 				BulletShoot shoots = new BulletShoot(this.getX(), this.getY() + py, 3, 3, null, dx, 0);
 				Game.shoot.add(shoots);
 			}
 		}
 
 		if (life <= 0) {
-			//game over
+			// game over
 			life = 0;
 			Game.gameState = "GAME_OVER";
 		}
 
-		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
-		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
+		updateCamera();
 	}
 
-	public void checkCollisionAmmo() {
-		for (int i = 0; i < Game.entities.size(); i++) {
-			Entity atual = Game.entities.get(i);
-			if (atual instanceof Bullets) {
-				if (Entity.isColliding(this, atual)) {
-					ammo += 10;
-					// System.out.println("Munição atual: " + ammo);
-					Game.entities.remove(atual);
-				}
-			}
-		}
+	public void updateCamera() {
+		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
+		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
 	}
 
 	public void checkCollisionGun() {
@@ -180,7 +171,20 @@ public class Player extends Entity {
 				if (Entity.isColliding(this, atual)) {
 					hasGun = true;
 					ammo += 10;
-					System.out.println("Pegou arma");
+					// System.out.println("Pegou arma");
+					// System.out.println("Munição atual: " + ammo);
+					Game.entities.remove(atual);
+				}
+			}
+		}
+	}
+
+	public void checkCollisionAmmo() {
+		for (int i = 0; i < Game.entities.size(); i++) {
+			Entity atual = Game.entities.get(i);
+			if (atual instanceof Bullets) {
+				if (Entity.isColliding(this, atual)) {
+					ammo += 10;
 					// System.out.println("Munição atual: " + ammo);
 					Game.entities.remove(atual);
 				}

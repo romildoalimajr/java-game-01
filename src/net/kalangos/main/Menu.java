@@ -3,15 +3,17 @@ package net.kalangos.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Menu {
 	
 	public String[] options = {"Novo Jogo","Carregar Jogo", "Sair"};
 	
-	public int currentOption =0;
+	public int currentOption = 0;
 	public int maxOption = options.length - 1;
 	
-	public boolean up, down;
+	public boolean up, down, enter;
+	public boolean pause = false;
 	
 
 	public void tick() {
@@ -25,13 +27,24 @@ public class Menu {
 		if(down) {
 			down = false;
 			currentOption++;
-			if(currentOption < maxOption) {
+			if(currentOption > maxOption) {
 				currentOption = 0;
+			}
+		}
+		if(enter) {
+			enter = false;
+			if(options[currentOption]  == "Novo Jogo" || options[currentOption]  == "continuar") {
+				Game.gameState = "NORMAL";
+				pause = false;
+			}else if(options[currentOption] == "Sair") {
+				System.exit(1);
 			}
 		}
 	}
 	
 	public void render(Graphics g) {
+		//Graphics2D g2 = (Graphics2D) g;
+		//g2.setColor(new Color(0,0,0,100));
 		g.setColor(Color.black);
 		g.fillRect(0, 0, Game.WIDTH*Game.SCALE, Game.HEIGHT*Game.SCALE);
 		g.setColor(Color.red);
@@ -40,7 +53,12 @@ public class Menu {
 		
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("arial", Font.BOLD, 26));
-		g.drawString("Novo Jogo", (Game.WIDTH*Game.SCALE) / 2 - 50, 160);
+		if(pause == false) {
+			g.drawString("Novo Jogo", (Game.WIDTH*Game.SCALE) / 2 - 50, 160);
+		}else {
+			g.drawString("Continuar", (Game.WIDTH*Game.SCALE) / 2 - 50, 160);
+		}
+		
 		
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("arial", Font.BOLD, 26));
