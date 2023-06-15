@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import net.kalangos.main.Game;
+import net.kalangos.main.Sound;
 import net.kalangos.world.Camera;
 import net.kalangos.world.World;
 
@@ -16,7 +17,7 @@ public class Enemy extends Entity {
 	private int xMask = 8, yMask = 8, wMask = 10, hMask = 10;
 	private BufferedImage[] sprites;
 
-	private int frames = 0, maxFrames = 20, index = 0, maxIndex = 1;
+	private int frames = 0, maxFrames = 20, index = 0, maxIndex = 3;
 
 	private int life = 10;
 	
@@ -56,6 +57,7 @@ public class Enemy extends Entity {
 			}
 		} else {
 			if (Game.rand.nextInt(100) < 10) {
+				Sound.hurtEffect.play();
 				Game.player.life -= Game.rand.nextInt(3);
 				Game.player.isDamaged = true;
 			}

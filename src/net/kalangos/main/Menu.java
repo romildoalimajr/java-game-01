@@ -3,6 +3,7 @@ package net.kalangos.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Menu {
 
@@ -41,10 +42,10 @@ public class Menu {
 	}
 
 	public void render(Graphics g) {
-		// Graphics2D g2 = (Graphics2D) g;
-		// g2.setColor(new Color(0,0,0,100));
-		g.setColor(Color.black);
-		g.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(new Color(0,0,0,100));
+		//g.setColor(Color.black);
+		g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
 		g.setColor(Color.red);
 		g.setFont(new Font("arial", Font.BOLD, 36));
 		g.drawString("> Kalangos Game <", (Game.WIDTH * Game.SCALE) / 2 - 185, (Game.HEIGHT * Game.SCALE) / 2 - 190);

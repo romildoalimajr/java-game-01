@@ -63,6 +63,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public Menu menu;
 
 	public Game() {
+		Sound.musicBackGround.play();
 		rand = new Random();
 		addKeyListener(this);
 		addMouseListener(this);
