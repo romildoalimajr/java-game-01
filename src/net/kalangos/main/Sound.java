@@ -10,6 +10,7 @@ public class Sound {
 	
 	public static final Sound musicBackGround = new Sound("/music.wav");
 	public static final Sound hurtEffect = new Sound("/hurt.wav");
+	public static final Sound hitGame = new Sound("/hitGame.wav");
 	
 	@SuppressWarnings("deprecation")
 	private Sound(String name) {

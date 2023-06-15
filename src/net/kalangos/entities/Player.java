@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import net.kalangos.main.Game;
+import net.kalangos.main.Sound;
 import net.kalangos.world.Camera;
 import net.kalangos.world.World;
 
@@ -105,6 +106,7 @@ public class Player extends Entity {
 		
 		if (shoot) {
 			shoot = false;
+			Sound.hitGame.play(); 
 			if (hasGun && ammo > 0) {
 				ammo--;
 				// criar bala e atirar
