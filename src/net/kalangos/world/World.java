@@ -34,7 +34,7 @@ public class World {
 			for (int xx = 0; xx < map.getWidth(); xx++) {
 				for (int yy = 0; yy < map.getHeight(); yy++) {
 					int pixelAtual = pixels[xx + (yy * map.getWidth())];
-					tiles[xx + (yy * map.getWidth())] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
+					tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
 					if (pixelAtual == 0xFF000000) {
 						// floor
 						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
@@ -56,14 +56,13 @@ public class World {
 					} else if (pixelAtual == 0xFFFFD800) {
 						// life pack
 						LifePack pack = new LifePack(xx * 16, yy * 16, 16, 16, Entity.LIFE_PACK_EN);
-						//pack.setMask(8, 8, 8, 8);
+						// pack.setMask(8, 8, 8, 8);
 						Game.entities.add(pack);
 					} else if (pixelAtual == 0xFFFF00DC) {
 						// bullet
 						Game.entities.add(new Bullets(xx * 16, yy * 16, 16, 16, Entity.BULLET_EN));
-					} else {
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
 					}
+
 				}
 			}
 
@@ -86,10 +85,10 @@ public class World {
 		int x4 = (xNext + TILE_SIZE - 1) / TILE_SIZE;
 		int y4 = (yNext + TILE_SIZE - 1) / TILE_SIZE;
 
-		return !(tiles[x1 + (y1 * World.WIDTH)] instanceof WallTile
+		return !((tiles[x1 + (y1 * World.WIDTH)] instanceof WallTile
 				|| tiles[x2 + (y2 * World.WIDTH)] instanceof WallTile
 				|| tiles[x3 + (y3 * World.WIDTH)] instanceof WallTile
-				|| tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile);
+				|| tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile));
 	}
 
 	public static void restartGame(String level) {
@@ -100,7 +99,7 @@ public class World {
 		Game.spritesheet = new Spritesheet("/spritesheet.png");
 		Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
 		Game.entities.add(Game.player);
-		Game.world = new World("/"+level);
+		Game.world = new World("/" + level);
 		return;
 
 	}

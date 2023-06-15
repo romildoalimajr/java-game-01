@@ -17,9 +17,10 @@ public class Player extends Entity {
 	public double speed = 1.4;
 
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 3;
+	public boolean moved = false;
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
-
+	
 	private BufferedImage playerDamage;
 
 	private boolean hasGun = false;
@@ -29,7 +30,7 @@ public class Player extends Entity {
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
 
-	public boolean moved = false;
+	
 	public boolean shoot = false;
 	public boolean mouseShoot = false;
 
@@ -58,7 +59,8 @@ public class Player extends Entity {
 			moved = true;
 			dir = right_dir;
 			x += speed;
-		} else if (left && World.isFree((int) (x - speed), this.getY())) {
+		} 
+		else if (left && World.isFree((int) (x - speed), this.getY())) {
 			moved = true;
 			dir = left_dir;
 			x -= speed;
@@ -70,25 +72,16 @@ public class Player extends Entity {
 		} else if (down && World.isFree(this.getX(), (int) (y + speed))) {
 			moved = true;
 			y += speed;
-		} else {
-			// Estamos colidindo
-			if (Game.rand.nextInt(100) < 10) {
-				Game.player.life -= Game.rand.nextInt(3);
-				Game.player.isDamaged = true;
-				if (Game.player.life <= 0) {
-					// Game Over
-					System.exit(1);
-				}
-				// System.out.println("Vida.: " + Game.player.life);
-			}
-		}
+		} 
 
-		frames++;
-		if (frames == maxFrames) {
-			frames = 0;
-			index++;
-			if (index > maxIndex) {
-				index = 0;
+		if(moved) {
+			frames++;
+			if (frames == maxFrames) {
+				frames = 0;
+				index++;
+				if (index > maxIndex) {
+					index = 0;
+				}
 			}
 		}
 
@@ -98,7 +91,7 @@ public class Player extends Entity {
 
 		if (isDamaged) {
 			this.damageFrames++;
-			if (this.damageFrames == 3) {
+			if (this.damageFrames == 8) {
 				this.damageFrames = 0;
 				isDamaged = false;
 			}
@@ -144,7 +137,7 @@ public class Player extends Entity {
 				double dx = Math.cos(angle);
 				double dy = Math.sin(angle);
 
-				BulletShoot shoots = new BulletShoot(this.getX(), this.getY() + py, 3, 3, null, dx, 0);
+				BulletShoot shoots = new BulletShoot(this.getX() + py, this.getY() + py, 3, 3, null, dx, dy);
 				Game.shoot.add(shoots);
 			}
 		}
@@ -155,15 +148,15 @@ public class Player extends Entity {
 			Game.gameState = "GAME_OVER";
 		}
 
-		//updateCamera();
+		updateCamera();
+//		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, (World.WIDTH * 16) - Game.WIDTH);
+//		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, (World.HEIGHT * 16) - Game.HEIGHT);
+	}
+
+	public void updateCamera() {
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, (World.WIDTH * 16) - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, (World.HEIGHT * 16) - Game.HEIGHT);
 	}
-
-//	public void updateCamera() {
-//		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, (World.WIDTH * 16) - Game.WIDTH);
-//		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, (World.HEIGHT * 16) - Game.HEIGHT);
-//	}
 
 	public void checkCollisionGun() {
 		for (int i = 0; i < Game.entities.size(); i++) {
@@ -185,7 +178,7 @@ public class Player extends Entity {
 			Entity atual = Game.entities.get(i);
 			if (atual instanceof Bullets) {
 				if (Entity.isColliding(this, atual)) {
-					ammo += 50;
+					ammo += 1000;
 					// System.out.println("Munição atual: " + ammo);
 					Game.entities.remove(atual);
 				}

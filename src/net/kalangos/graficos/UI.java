@@ -10,7 +10,8 @@ public class UI {
 
 	public void render(Graphics g) {
 		g.setColor(Color.RED);
-		g.fillRect(8, 4, (int)((Game.player.life/Game.player.life)*70), 8);
+		g.fillRect(8,4,70,8);
+		//g.fillRect(8, 4, (int)((Game.player.life/Game.player.life)*70), 8);
 		g.setColor(Color.GREEN);
 		g.fillRect(8, 4, (int)((Game.player.life/Game.player.life)*70), 8);
 		g.setColor(Color.WHITE);

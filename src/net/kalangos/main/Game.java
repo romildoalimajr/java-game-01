@@ -32,19 +32,20 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
-	public static JFrame frame;
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
 	public static final int SCALE = 3;
 
-	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
+	private int CUR_LEVEL = 1, MAX_LEVEL = 5;
 	private BufferedImage image;
 
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<BulletShoot> shoot;
+	
 	public static Spritesheet spritesheet;
 
 	public static World world;
@@ -117,7 +118,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void tick() {
-		if (gameState == "MENU") {
+		if (gameState == "NORMAL") {
 			this.restartGame = false;
 			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -173,7 +174,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		// Renderização do jogo
-		Graphics g2 = (Graphics2D) g;
+		//Graphics g2 = (Graphics2D) g;
 		world.render(g);
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
@@ -193,9 +194,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.setColor(Color.WHITE);
 		g.drawString("Ammo.: " + player.ammo, 610, 20);
 		if (gameState == "GAME_OVER") {
-			// Graphics2D g2 = (Graphics2D) g;
-			g.setColor(new Color(0, 0, 0, 100));
-			g.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color(0, 0, 0, 100));
+			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
 			g.setFont(new Font("arial", Font.BOLD, 36));
 			g.setColor(Color.WHITE);
 			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 70, (HEIGHT * SCALE) / 2);
@@ -233,7 +234,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			if (System.currentTimeMillis() - timer >= 1000) {
 				System.out.println("FPS.: " + frames);
 				frames = 0;
-				timer = System.currentTimeMillis();
+				timer += 1000;
 			}
 		}
 		stop();
@@ -299,9 +300,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			player.down = false;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			player.shoot = false;
-		}
 	}
 
 	@Override

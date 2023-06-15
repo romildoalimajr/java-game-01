@@ -23,6 +23,8 @@ public class Entity {
 	protected int width;
 	protected int height;
 	
+	public boolean debug = false;
+	
 	private BufferedImage sprite;
 	
 	private int xMask, yMask, wMask, hMask;
@@ -92,7 +94,7 @@ public class Entity {
 	
 	public void render(Graphics g) { 
 		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
-		g.setColor(Color.RED);
+		//g.setColor(Color.RED);
 		//g.fillRect(this.getX() + xMask - Camera.x, this.getY() + yMask - Camera.y, wMask, hMask);
 	}
 	

@@ -12,7 +12,6 @@ import net.kalangos.world.World;
 
 public class Enemy extends Entity {
 
-	private boolean moved = true;
 	private double speed = 0.4;
 	private int xMask = 8, yMask = 8, wMask = 10, hMask = 10;
 	private BufferedImage[] sprites;
