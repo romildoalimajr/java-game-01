@@ -155,8 +155,9 @@ public class Menu {
 		// g2.setColor(new Color(0,0,0,100));
 		// g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
 
-		g.setColor(Color.red);
-		g.setFont(new Font("arial", Font.BOLD, 36));
+		g.setColor(Color.black);
+		g.setFont(Game.newFont.deriveFont(30f));
+		//g.setFont(new Font("arial", Font.BOLD, 36));
 		g.drawString("> Kalangos Game <", (Game.WIDTH * Game.SCALE) / 2 - 185, (Game.HEIGHT * Game.SCALE) / 2 - 190);
 
 		/* opções do menu */

@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -12,6 +13,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -55,6 +58,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Random rand;
 
 	public UI ui;
+	
+	public static InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("pixelFont.ttf");
+	public static Font newFont;
 
 	public static String gameState = "MENU";
 	private boolean showMessageGameOver = false;
@@ -85,6 +91,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/level1.png");
+		
+		try {
+			newFont = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(20f);
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		menu = new Menu();
 
@@ -203,7 +219,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		g.setFont(new Font("arial", Font.BOLD, 17));
 		g.setColor(Color.WHITE);
-		g.drawString("Ammo.: " + player.ammo, 610, 20);
+		g.setFont(newFont);
+		g.drawString("Ammo.: " + player.ammo, 530, 30);
+		//g.setFont(newFont);
+//		g.drawString("teste com a nova fonte", 20,30);
 		if (gameState == "GAME_OVER") {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setColor(new Color(0, 0, 0, 100));
