@@ -106,7 +106,7 @@ public class World {
 
 	public void render(Graphics g) {
 		int xStart = Camera.x >> 4;
-		int yStart = Camera.x >> 4;
+		int yStart = Camera.y >> 4;
 
 		int xFinal = xStart + (Game.WIDTH >> 4);
 		int yFinal = yStart + (Game.HEIGHT >> 4);
