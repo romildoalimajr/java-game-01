@@ -12,6 +12,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import net.kalangos.world.World;
+
 public class Menu {
 
 	public String[] options = { "Novo Jogo", "Carregar Jogo", "Sair" };
@@ -20,9 +22,21 @@ public class Menu {
 	public int maxOption = options.length - 1;
 
 	public boolean up, down, enter;
-	public boolean pause = false;
+	public static boolean pause = false;
+
+	public static boolean saveExists = false;
+	public static boolean saveGame = false;
 
 	public void tick() {
+
+		File file = new File("save.txt");
+
+		if (file.exists()) {
+			saveExists = true;
+		} else {
+			saveExists = false;
+		}
+
 		if (up) {
 			up = false;
 			currentOption--;
@@ -42,25 +56,47 @@ public class Menu {
 			if (options[currentOption] == "Novo Jogo" || options[currentOption] == "Continuar") {
 				Game.gameState = "NORMAL";
 				pause = false;
+				file = new File("save.txt");
+				file.delete();
+			} else if (options[currentOption] == "Carregar Jogo") {
+				file = new File("save.txt");
+				if (file.exists()) {
+					String saver = loadGame(10);
+					applySave(saver);
+				}
 			} else if (options[currentOption] == "Sair") {
 				System.exit(1);
 			}
 		}
 	}
-	
+
+	public static void applySave(String str) {
+		String[] spl = str.split("/");
+		for (int i = 0; i < spl.length; i++) {
+			String[] spl2 = spl[i].split(":");
+			switch (spl2[0]) {
+			case "level":
+				World.restartGame("level" + spl2[1] + ".png");
+				Game.gameState = "NORMAL";
+				pause = false;
+				break;
+			}
+		}
+	}
+
 	public static String loadGame(int encode) {
 		String line = "";
 		File file = new File("save.txt");
-		if(file.exists()) {
+		if (file.exists()) {
 			try {
 				String singleLine = null;
 				BufferedReader reader = new BufferedReader(new FileReader("save.txt"));
 				try {
-					while((singleLine = reader.readLine()) != null) {
+					while ((singleLine = reader.readLine()) != null) {
 						String[] trans = singleLine.split(":");
 						char[] val = trans[1].toCharArray();
 						trans[1] = "";
-						for(int i = 0; i < val.length; i++) {
+						for (int i = 0; i < val.length; i++) {
 							val[i] -= encode;
 							trans[1] += val[i];
 						}
@@ -69,61 +105,61 @@ public class Menu {
 						line += trans[1];
 						line += "/";
 					}
-				}catch(IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}catch(FileNotFoundException e) {
+			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
 		return line;
 	}
-	
+
 	public static void saveGame(String[] val1, int[] val2, int encode) {
 		BufferedWriter write = null;
-		
+
 		try {
 			write = new BufferedWriter(new FileWriter("save.txt"));
-		}catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		for(int i = 0; i < val1.length; i++) {
+
+		for (int i = 0; i < val1.length; i++) {
 			String current = val1[i];
-			current+= ":";
+			current += ":";
 			char[] value = Integer.toString(val2[i]).toCharArray();
-			
-			for(int n = 0;  n < value.length; n++) {
-				value[n]+= encode;
-				current+= value[n];
+
+			for (int n = 0; n < value.length; n++) {
+				value[n] += encode;
+				current += value[n];
 			}
 			try {
 				write.write(current);
-				if(i < val1.length - 1) {
+				if (i < val1.length - 1) {
 					write.newLine();
 				}
-			}catch(IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		try {
 			write.flush();
 			write.close();
-		}catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		//g2.setColor(new Color(0,0,0,100));
-		//g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
-	
+		// g2.setColor(new Color(0,0,0,100));
+		// g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
+
 		g.setColor(Color.red);
 		g.setFont(new Font("arial", Font.BOLD, 36));
 		g.drawString("> Kalangos Game <", (Game.WIDTH * Game.SCALE) / 2 - 185, (Game.HEIGHT * Game.SCALE) / 2 - 190);
 
-		/*opções do menu*/
+		/* opções do menu */
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("arial", Font.BOLD, 26));
 		if (pause == false) {
@@ -133,7 +169,6 @@ public class Menu {
 		}
 		g.drawString("Carregar Jogo", (Game.WIDTH * Game.SCALE) / 2 - 70, 200);
 		g.drawString("Sair", (Game.WIDTH * Game.SCALE) / 2 - 10, 240);
-		
 
 		if (options[currentOption] == "Novo Jogo") {
 			g.drawString(" > ", (Game.WIDTH * Game.SCALE) / 2 - 90, 160);

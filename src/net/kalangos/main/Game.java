@@ -45,7 +45,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<BulletShoot> shoot;
-	
+
 	public static Spritesheet spritesheet;
 
 	public static World world;
@@ -62,6 +62,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean restartGame = false;
 
 	public Menu menu;
+	public static int[] pixels;
+	public static int[] lightMap;
+
+	public boolean saveGame = false;
 
 	public Game() {
 		Sound.musicBackGround.play();
@@ -119,6 +123,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void tick() {
 		if (gameState == "NORMAL") {
+			if (this.saveGame) {
+				this.saveGame = false;
+				String[] opt1 = { "level" };
+				int[] opt2 = { this.CUR_LEVEL };
+				Menu.saveGame(opt1, opt2, 10);
+				System.out.println("Jogo Salvo com sucesso!");
+			}
 			this.restartGame = false;
 			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -174,7 +185,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		// Renderização do jogo
-		//Graphics g2 = (Graphics2D) g;
+		// Graphics g2 = (Graphics2D) g;
 		world.render(g);
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
@@ -282,6 +293,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			gameState = "MENU";
 			menu.pause = true;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_P) {
+			if(gameState == "NORMAL") {
+				this.saveGame = true;
+			}
 		}
 	}
 
