@@ -242,14 +242,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		} else if (gameState == "MENU") {
 			menu.render(g);
 		}
-		
+		/*
 		Graphics2D g2 = (Graphics2D) g;
 		double angleMouse = Math.atan2(mouseY - 200 + 25, mouseX - 200 + 25);
 		System.out.println(Math.toDegrees(angleMouse));
 		g2.rotate(angleMouse, 200+25,200+25);
 		g.setColor(Color.RED);
 		g.fillRect(200, 200, 50, 50);
-		
+		*/
 		bs.show();
 	}
 

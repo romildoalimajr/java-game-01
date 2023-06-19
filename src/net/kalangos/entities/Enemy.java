@@ -35,7 +35,10 @@ public class Enemy extends Entity {
 
 	public void tick() {
 		
-		 xMask = 8; yMask = 8; wMask = 5; hMask = 5;
+		/* xMask = 8; yMask = 8; wMask = 5; hMask = 5;*/
+		
+		if(this.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY())
+				< 40);
 		 
 		// if (Game.rand.nextInt(100) < 30) {
 		if (this.isCollidingWithPlayer() == false) {

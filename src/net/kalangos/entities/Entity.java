@@ -85,6 +85,10 @@ public class Entity {
 		
 	}
 	
+	public double calculateDistance(int x1, int y1, int x2, int y2) {
+		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) + (y1 - y2));
+	}
+	
 	public static boolean isColliding(Entity e1, Entity e2) {
 		Rectangle e1Mask = new Rectangle(e1.getX() + e1.xMask, e1.getY() + e1.yMask, e1.wMask, e1.hMask);
 		Rectangle e2Mask = new Rectangle(e2.getX() + e2.xMask, e1.getY() + e2.yMask, e2.wMask, e2.hMask);
