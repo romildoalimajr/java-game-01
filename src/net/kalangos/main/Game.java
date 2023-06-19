@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -29,7 +30,7 @@ import net.kalangos.graficos.Spritesheet;
 import net.kalangos.graficos.UI;
 import net.kalangos.world.World;
 
-public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
 	/**
 	 * 
@@ -72,12 +73,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static int[] lightMap;
 
 	public boolean saveGame = false;
+	
+	public int mouseX, mouseY;
 
 	public Game() {
 		Sound.musicBackGround.play();
 		rand = new Random();
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
 		// inicializando os objetos do jogo
@@ -238,6 +242,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		} else if (gameState == "MENU") {
 			menu.render(g);
 		}
+		
+		Graphics2D g2 = (Graphics2D) g;
+		double angleMouse = Math.atan2(mouseY - 200 + 25, mouseX - 200 + 25);
+		System.out.println(Math.toDegrees(angleMouse));
+		g2.rotate(angleMouse, 200+25,200+25);
+		g.setColor(Color.RED);
+		g.fillRect(200, 200, 50, 50);
+		
 		bs.show();
 	}
 
@@ -368,6 +380,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		this.mouseX = e.getX();
+		this.mouseY = e.getY();
 	}
 
 }
