@@ -35,6 +35,7 @@ public class Enemy extends Entity {
 	}
 
 	public void tick() {
+		depth = 0;
 		
 		/* xMask = 8; yMask = 8; wMask = 5; hMask = 5;*/
 		

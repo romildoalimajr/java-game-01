@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import net.kalangos.entities.Bullets;
 import net.kalangos.entities.Enemy;
 import net.kalangos.entities.Entity;
+import net.kalangos.entities.Flower;
 import net.kalangos.entities.LifePack;
 import net.kalangos.entities.Player;
 import net.kalangos.entities.Weapon;
@@ -61,6 +62,9 @@ public class World {
 					} else if (pixelAtual == 0xFFFF00DC) {
 						// bullet
 						Game.entities.add(new Bullets(xx * 16, yy * 16, 16, 16, Entity.BULLET_EN));
+					} else if (pixelAtual == 0xFFB200FF) {
+						// bullet
+						Game.entities.add(new Flower(xx * 16, yy * 16, 16, 16, Entity.FLOWER_EN));
 					}
 
 				}
