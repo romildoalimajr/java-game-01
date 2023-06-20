@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import net.kalangos.entities.BulletShoot;
@@ -72,7 +73,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public Menu menu;
 	
 	public static int[] pixels;
-	public static int[] lightMap;
+	public BufferedImage lightMap;
+	public int[] lightMapPixels;
 
 	public boolean saveGame = false;
 	
@@ -91,6 +93,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		// inicializando os objetos do jogo
 		ui = new UI();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		try {
+			lightMap = ImageIO.read(getClass().getResource("/lightMap.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		lightMapPixels = new int[lightMap.getWidth() * lightMap.getHeight()];
+		lightMap.getRGB(0, 0, lightMap.getWidth(), lightMap.getHeight(), lightMapPixels, 0, lightMap.getWidth());
 		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
@@ -214,6 +224,17 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 	}
 
+	public void applyLight() {
+		for(int xx = 0; xx < Game.WIDTH; xx++) {
+			for(int yy = 0; yy < Game.HEIGHT; yy++) {
+				if(lightMapPixels[xx +(yy * Game.WIDTH)] == 0xffffffff) {
+					pixels[xx + (yy * Game.WIDTH)] = 0;
+				}else {
+					continue;
+				}
+			}
+		}
+	}
 	public void render() {
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) {
@@ -235,12 +256,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		for (int i = 0; i < shoot.size(); i++) {
 			shoot.get(i).render(g);
 		}
+		
+		applyLight();
+		
 		ui.render(g);
 		/***/
 
 		g.dispose();
 		g = bs.getDrawGraphics();
-		drawRectangleExample(xx, yy);
+		//drawRectangleExample(xx, yy);
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		g.setFont(new Font("arial", Font.BOLD, 17));
 		g.setColor(Color.WHITE);
