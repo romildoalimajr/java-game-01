@@ -1,13 +1,14 @@
 package net.kalangos.entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import net.kalangos.main.Game;
 import net.kalangos.main.Sound;
+import net.kalangos.world.AStar;
 import net.kalangos.world.Camera;
+import net.kalangos.world.Vector2i;
 import net.kalangos.world.World;
 
 public class Enemy extends Entity {
@@ -65,6 +66,13 @@ public class Enemy extends Entity {
 			}
 		}
 
+		if(path == null || path.size() == 0) {
+			Vector2i start = new Vector2i((int)(x/16),(int)(y/16));
+			Vector2i end = new Vector2i((int)(Game.player.x/16),(int)(Game.player.y/16));
+			path = AStar.findPath(Game.world, start, end);
+		}
+			//followPath(path);
+		
 		frames++;
 		if (frames == maxFrames) {
 			frames = 0;
