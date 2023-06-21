@@ -87,7 +87,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static BufferedImage minimapa;
 
 	public Game() {
-		Sound.musicBackGround.play();
+		Sound.music.play();
 		rand = new Random();
 		addKeyListener(this);
 		addMouseListener(this);
